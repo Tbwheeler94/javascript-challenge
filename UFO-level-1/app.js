@@ -1,13 +1,13 @@
 // Assign the data from `data.js` to a descriptive variable
 var sightings = data;
 
-// Select the button
+// Select the filter button
 var button = d3.select("#filter-btn");
 
-// Select the form
+// Select the form id
 var form = d3.select("#form");
 
-// Create event handlers 
+// Create event handlers for button and form 
 button.on("click", runEnter);
 form.on("submit",runEnter);
 
@@ -17,17 +17,16 @@ function runEnter() {
   // Prevent the page from refreshing
   d3.event.preventDefault();
   
-  // Select the input element and get the raw HTML node
+  // Select the input element
   var inputElement = d3.select("#datetime");
 
   // Get the value property of the input element
   var inputValue = inputElement.property("value");
 
+  // Filter the data by datetime
   var filteredData = sightings.filter(sighting => sighting.datetime === inputValue);
 
-  // BONUS: Calculate summary statistics for the age field of the filtered data
-
-  // First, create an array with just the age values
+  // Pull out individual values for respective keys
   var date_time = filteredData.map(sighting => sighting.datetime);
   var city_data = filteredData.map(sighting => sighting.city);
   var state_data = filteredData.map(sighting => sighting.state);
@@ -36,10 +35,7 @@ function runEnter() {
   var duration_data = filteredData.map(sighting => sighting.durationMinutes);
   var comments_data = filteredData.map(sighting => sighting.comments);
 
-  console.log(date_time)
-
-
-  // Then, select the unordered list element by class name
+  // Select classes for table body rows
   var date_location = d3.select(".table-date");
   var city_location = d3.select(".table-city");
   var state_location = d3.select(".table-state");
@@ -48,15 +44,7 @@ function runEnter() {
   var duration_location = d3.select(".table-duration");
   var comments_location = d3.select(".table-comments");
 
-  // remove any children from the list to
- // date_location.html("");
- // city_location.html("");
- // state_location.html("");
- // country_location.html("");
- // shape_location.html("");
- // duration_location.html(""); 
- // comments_location.html(""); 
-
+ // Loop through each datapoint for respective categories, append a row with the data, and display as text
   date_time.forEach((datapoint) => {
     date_location.append("tr").text(datapoint);
   })
